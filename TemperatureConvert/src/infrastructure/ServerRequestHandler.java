@@ -124,6 +124,9 @@ public class ServerRequestHandler {
 	}
 
 
+	/*
+	 * OBS.: ESTE CONVERSOR PODERIA SE TRATAR DE UM OBJETO REMOTO...
+	 */
 	static double ConvertTemperature(int type, double value){
 		double result = 0;
 		switch (type) {

@@ -61,9 +61,15 @@ public class ClientRequestHandler {
 				break;
 			case "HTML":
 					String USER_AGENT = "Mozilla/5.0";
-					Marshaller m = new Marshaller();
-					String message = m.convertFromBytes(send_msg).toString();
-					String[] params = message.split(",");
+					/**
+					 * NÃO CONSEGUI ENVIAR A MENSAGEM EM FORMA DE BYTE[].
+					 * CONTINUAREI PESQUISANDO...
+					 */
+					//************************************************************
+					Marshaller m = new Marshaller();							//
+					String message = m.convertFromBytes(send_msg).toString();	//
+					String[] params = message.split(",");						//
+					//************************************************************
 					String url = "http://localhost/convertion?type=" + params[0] + "&value=" + URLEncoder.encode(params[1], "UTF-8");
 					 
 					URL obj = new URL(url);
