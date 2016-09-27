@@ -1,14 +1,23 @@
 package infrastructure;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.HttpURLConnection;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.Socket;
+import java.net.URL;
+import java.net.URLEncoder;
+
+import distribution.Marshaller;
 
 public class ClientRequestHandler {
 
@@ -51,7 +60,32 @@ public class ClientRequestHandler {
 				socketTCP.close();
 				break;
 			case "HTML":
-				
+					String USER_AGENT = "Mozilla/5.0";
+					Marshaller m = new Marshaller();
+					String message = m.convertFromBytes(send_msg).toString();
+					String[] params = message.split(",");
+					String url = "http://localhost/convertion?type=" + params[0] + "&value=" + URLEncoder.encode(params[1], "UTF-8");
+					 
+					URL obj = new URL(url);
+					HttpURLConnection con = (HttpURLConnection) obj.openConnection(
+							new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 1313))
+					);
+			
+					con.setRequestMethod("GET");
+					con.setRequestProperty("User-Agent", USER_AGENT);
+			 
+					int responseCode = con.getResponseCode();
+			 
+					BufferedReader in = new BufferedReader(
+					        new InputStreamReader(con.getInputStream()));
+					String inputLine;
+					StringBuffer response = new StringBuffer();
+			 
+					while ((inputLine = in.readLine()) != null) {
+						response.append(inputLine);
+					}
+					retorno = m.convertToBytes(response.toString());
+					in.close();
 				break;
 			}	
 		} catch (IOException | ClassNotFoundException e) {

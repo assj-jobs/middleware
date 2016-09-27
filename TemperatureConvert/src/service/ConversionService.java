@@ -54,12 +54,10 @@ public class ConversionService {
 			String msg = String.valueOf(tipo);
 			msg += ", " + String.valueOf(valor);
 			
-			//Send mesage to client request handler.
 			byte[] response = crh.send(m.convertToBytes(msg), new byte[1024]);
 			double resultado = Double.parseDouble(m.convertFromBytes(response).toString());
 			System.out.println("\nResultado da conversão: " + String.format(Locale.ENGLISH,"%.2f", resultado));
 					
-			//Close scanner's
 			type.close();
 			value.close();
 	}

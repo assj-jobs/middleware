@@ -12,6 +12,8 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -111,7 +113,6 @@ public class ServerRequestHandler {
 				break;
 			case "HTML":
 				HttpServer server = HttpServer.create(new InetSocketAddress(1313), 0);
-				server.createContext("/", new InfoHandler());
 				server.createContext("/convertion", new Convertion());
 				server.setExecutor(null);
 				server.start();
@@ -143,25 +144,30 @@ public class ServerRequestHandler {
 		return result;
 	}
 
-	static class InfoHandler implements HttpHandler {
-		public void handle(HttpExchange t) throws IOException {
-			String response = "Use /convert to convert temperature";
-			t.sendResponseHeaders(200, response.length());
-			OutputStream os = t.getResponseBody();
-			os.write(response.getBytes());
-			os.close();
-		}
-	}
-	
 	static class Convertion implements HttpHandler {
-		public void handle(HttpExchange t) throws IOException {
-			String response = "Use /convert to convert temperature";
-			t.sendResponseHeaders(200, response.length());
-			OutputStream os = t.getResponseBody();
-			os.write(response.getBytes());
-			os.close();
+		public void handle(HttpExchange httpExchange) throws IOException {
+			Map <String,String>params = this.queryToMap(httpExchange.getRequestURI().getQuery());
+			Double result = ServerRequestHandler.ConvertTemperature(Integer.parseInt(params.get("type")), Double.parseDouble(params.get("value")));
+			String response =  result.toString();
+			httpExchange.sendResponseHeaders(200, response.length());
+		    OutputStream os = httpExchange.getResponseBody();
+		    os.write(response.getBytes());
+		    os.close();
+		}
+
+		private Map<String, String> queryToMap(String query) {
+			Map<String, String> result = new HashMap<String, String>();
+			if(query != null){
+				for (String param : query.split("&")) {
+					String pair[] = param.split("=");
+					if (pair.length>1) {
+						result.put(pair[0], pair[1]);
+					}else{
+						result.put(pair[0], "");
+					}
+				}
+			}
+			return result;
 		}
 	}
-
-
 }
