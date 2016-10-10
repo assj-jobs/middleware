@@ -1,18 +1,15 @@
-package service;
+package application;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Scanner;
 
 import distribution.Marshaller;
 import infrastructure.ClientRequestHandler;
-import infrastructure.ServerRequestHandler;
 
 public class ConversionService {
 
 	public static void main(String[] args) throws IOException {
-			FileInputStream fis = null;
 			Scanner type = new Scanner(System.in);
 
 	        System.out.println("CONVERSÃO DE TEMPERATURA: ");

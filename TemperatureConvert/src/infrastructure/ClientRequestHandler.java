@@ -28,7 +28,7 @@ public class ClientRequestHandler {
 			String protocol = "";
 			
 			//GET PROTOCOL TYPE IN FILE
-			InputStream is = new FileInputStream("./protocol.properties");
+			InputStream is = new FileInputStream("C:/repositorio/TemperatureConvertSever/protocol.properties");
 			int size = is.available();
 
 			for(int i = 0; i < size; i++) {
