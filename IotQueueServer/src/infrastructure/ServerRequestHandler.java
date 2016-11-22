@@ -3,10 +3,10 @@ package infrastructure;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-
-import distribution.Marshaller;
+import distribution.marshaller.Marshaller;
 
 public class ServerRequestHandler {
+
 
 	public static void main(String[] args) {
 		try {

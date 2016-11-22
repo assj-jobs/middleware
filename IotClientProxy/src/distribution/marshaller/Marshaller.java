@@ -1,4 +1,4 @@
-package distribution;
+package distribution.marshaller;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
